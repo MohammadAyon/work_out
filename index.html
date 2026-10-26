@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101214">
+<title>V-Taper Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eceeef;--card:#fff;--ink:#14181d;--mute:#59626c;--line:#d3d8dc;--c:#2b59d6;--on:#fff;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#101214;--card:#181b1f;--ink:#eef0f2;--mute:#9aa3ad;--line:#2a2f35;--on:#0d0f11;color-scheme:dark}}
+body[data-t=d1]{--c:#2b59d6}body[data-t=d2]{--c:#d6362b}body[data-t=d3]{--c:#1b8f4e}body[data-t=d4]{--c:#e2a300;--on:#14181d}
+body[data-t=log],body[data-t=guide]{--c:var(--ink);--on:var(--card)}
+@media (prefers-color-scheme:dark){body[data-t=d1]{--c:#6a92ff}body[data-t=d2]{--c:#ff6f64}body[data-t=d3]{--c:#3ccb7f}body[data-t=d4]{--c:#ffc83d}}
+*{box-sizing:border-box}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Barlow,system-ui,sans-serif;padding:env(safe-area-inset-top) 0 40px}
+.wrap{max-width:560px;margin:0 auto;padding:0 14px}
+header{padding:20px 0 10px}
+h1,h2,h3,.num{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;letter-spacing:.01em;margin:0}
+h1{font-size:34px;line-height:1.05}
+header p{margin:4px 0 0;color:var(--mute)}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:none;min-height:44px;padding:0 16px;border-radius:22px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:600 15px Barlow,sans-serif;cursor:pointer}
+nav button[aria-current=true]{background:var(--c);border-color:var(--c);color:var(--on)}
+nav .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;background:var(--d)}
+nav button[aria-current=true] .dot{background:var(--on)}
+.top{padding:18px 0 4px}
+.top h2{font-size:30px;line-height:1.1}
+.top p{margin:4px 0;color:var(--mute)}
+.bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin:12px 0 4px}
+.bar i{display:block;height:100%;width:0;background:var(--c);transition:width .25s}
+.cnt{font-size:14px;color:var(--mute)}
+.ex,.box{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:6px;padding:14px 14px 12px;margin:12px 0}
+.ex h3{font-size:23px;line-height:1.15}
+.tg{margin:2px 0 8px;color:var(--mute);font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{border:1px solid var(--line);border-radius:4px;padding:1px 9px;font-weight:600;font-size:14px}
+.pl{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.p{width:48px;height:48px;border-radius:50%;border:4px solid var(--c);background:var(--card);color:var(--ink);font:700 19px "Barlow Condensed",sans-serif;cursor:pointer;padding:0}
+.p[aria-pressed=true]{background:radial-gradient(circle,var(--card) 0 6px,var(--c) 6.5px);color:transparent}
+.wt{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--mute)}
+.wt input,.f input{width:84px;min-height:40px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:600 17px Barlow,sans-serif;padding:0 8px}
+details{margin-top:8px;font-size:15px}
+summary{cursor:pointer;color:var(--mute);min-height:32px;display:flex;align-items:center}
+details p{margin:4px 0 2px}
+button.act{min-height:44px;padding:0 18px;border-radius:6px;border:2px solid var(--ink);background:transparent;color:var(--ink);font:600 15px Barlow,sans-serif;cursor:pointer}
+button.pri{background:var(--ink);color:var(--card)}
+.f{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.f label{display:flex;flex-direction:column;font-size:14px;color:var(--mute);gap:3px}
+.f input[type=date]{width:150px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td,th{text-align:left;padding:7px 4px;border-bottom:1px solid var(--line)}
+th{color:var(--mute);font-weight:500;font-size:14px}
+.d{color:var(--mute);font-size:13px}
+.x{background:none;border:0;color:var(--mute);font-size:20px;min-width:40px;min-height:40px;cursor:pointer}
+.box h3{font-size:22px;margin-bottom:4px}
+.box details{border-top:1px solid var(--line);padding-top:6px}
+.box details:first-of-type{border:0}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body data-t="d1">
+<div class="wrap">
+<header><h1>V-taper plan</h1><p>Upper, lower, full body. Tap a plate after each set.</p></header>
+<nav id="nav" aria-label="Sections"></nav>
+<main id="main"></main>
+</div>
+<script>
+const K="vtaper-v1",H=168;
+const D=[
+{id:"d1",tab:"Day 1",name:"Upper",sub:"Back, shoulders and upper chest. About 65 min.",why:"Lats come first for back width, then the heavy upper-chest press while you are fresh. Side delts come before arms because form fades with fatigue.",ex:[
+["Wide-grip lat pulldown","Lats",3,"8–10","1–2","2–3 min","Assisted pull-up"],
+["Incline dumbbell press (15–30°)","Upper chest, front delts",3,"6–10","1–2","2–3 min","Incline Smith or barbell press"],
+["Chest-supported row","Mid-back, lats",3,"8–12","1–2","2 min","Seated cable row"],
+["Cable lateral raise","Side delts",4,"12–20","0–1","60–90 s","Dumbbell lateral raise"],
+["Low-to-high cable fly","Upper chest",2,"12–15","0–1","60–90 s","Incline dumbbell fly"],
+["Reverse pec deck or cable rear-delt fly","Rear delts",2,"15–20","0–1","60 s","Face pull"],
+["Overhead cable triceps extension","Triceps, long head",3,"10–12","0–1","90 s","Dumbbell overhead extension"],
+["Incline dumbbell curl","Biceps, long head",3,"10–12","0–1","90 s","Cable curl behind the body"]]},
+{id:"d2",tab:"Day 2",name:"Lower",sub:"Quads, hamstrings, glutes, calves and abs. About 60 min.",why:"Heavy compounds first, quads before hamstrings. Curls, calves and abs finish the session so they do not tire you before the big lifts.",ex:[
+["Hack squat","Quads, glutes",3,"6–10","1–2","3 min","Smith squat or goblet squat"],
+["Romanian deadlift","Hamstrings, glutes",3,"8–10","2","2–3 min","Dumbbell RDL or back extension"],
+["Bulgarian split squat","Quads, glutes",2,"8–10 per leg","1–2","2 min","Walking lunge"],
+["Seated or lying leg curl","Hamstrings",3,"10–12","0–1","90 s","Nordic curl negatives"],
+["Standing calf raise (2 s pause at the bottom)","Calves",3,"8–12","0–1","90 s","Single-leg calf raise on a step"],
+["Hanging leg raise","Abs",3,"10–15","1","60–90 s","Reverse crunch"]]},
+{id:"d3",tab:"Day 3",name:"Full body",sub:"A second hit for back, chest, shoulders and legs. About 70 min.",why:"Pull-ups and the press come first. To save about 10 minutes, superset hammer curl with pushdown, and calf raise with cable crunch.",ex:[
+["Pull-up (add weight when easy)","Lats, upper back",3,"6–10","1–2","2–3 min","Neutral-grip pulldown"],
+["Low-incline barbell or machine press","Upper chest, delts",3,"6–8","1–2","2–3 min","Incline Smith press"],
+["One-arm cable or T-bar row","Back thickness",2,"10–12","1","2 min","Dumbbell row"],
+["Dumbbell lateral raise","Side delts",3,"15–20","0–1","60–90 s","Machine lateral raise"],
+["Leg press (feet mid-height)","Quads, glutes",3,"10–12","1–2","2–3 min","Hack squat"],
+["Seated leg curl","Hamstrings",2,"10–12","0–1","90 s","Lying leg curl"],
+["Hammer curl","Biceps, forearms",2,"10–12","0–1","90 s","Cross-body curl"],
+["Rope pushdown","Triceps",2,"12–15","0–1","60–90 s","Bar pushdown"],
+["Seated calf raise","Calves",3,"12–15","0–1","60–90 s","Leg-press calf raise"],
+["Cable crunch","Abs",3,"10–15","1","60–90 s","Machine crunch"]]},
+{id:"d4",tab:"Day 4",name:"V-taper extra",sub:"Optional. About 45 min.",why:"Add this only when you have time and feel recovered. Skip it if your strength is dropping or your legs are still tired.",ex:[
+["Cable lateral raise","Side delts",4,"15–20","0–1","60 s","Dumbbell lateral raise"],
+["Incline dumbbell press","Upper chest",3,"10–12","1","2 min","Incline machine press"],
+["Neutral-grip lat pulldown","Lats",3,"10–12","1","2 min","Assisted pull-up"],
+["Rear-delt cable fly","Rear delts",3,"15–20","0–1","60 s","Reverse pec deck"],
+["Cable curl","Biceps",2,"12–15","0–1","60 s","Dumbbell curl"],
+["Rope pushdown","Triceps",2,"12–15","0–1","60 s","Bar pushdown"],
+["Ab wheel rollout","Abs",3,"8–12","1","60–90 s","Cable crunch"]]}];
+const COL={d1:"#2b59d6",d2:"#d6362b",d3:"#1b8f4e",d4:"#e2a300"};
+const G=[
+["Progression","Stay at the same weight until every set reaches the top of the rep range at the target RIR. Then add 2.5–5% (1–2 kg for dumbbells, 5 kg for legs). Log every session with the weight box on each card."],
+["Intensity (RIR)","RIR is how many good reps you could still do. Use 3 RIR for the first two weeks, then the RIR shown on each card. End a set when your form breaks."],
+["Warm-up","Your walk to the gym is the general warm-up. Before the first compound lift, do 50% × 8, 70% × 4–5 and 85% × 2–3. Before later compounds, do one lighter set."],
+["Cardio","Keep your daily steps steady. Do the 1 km run on non-leg days. On Day 2, keep it easy or skip it. If sleep or leg strength gets worse, cut the run before cutting lifting."],
+["Deload","Every 5th or 6th week, halve the sets and keep 3–4 RIR. Do it sooner if your strength drops for two sessions in a row."],
+["Food","Protein: about 140–170 g a day. Fat-loss pace: 0.4–0.7 kg a week. Losing more than 1 kg a week for two weeks, or lifts dropping: add 150–200 kcal. Losing less than 0.3 kg a week for three weeks: cut 100–150 kcal or add steps."],
+["As you get leaner","Add weight to pull-ups and leg raises when they feel easy. A waist of about 0.45 × your height (76 cm) is a strong V-taper target. Near 0.47 (79 cm), consider a maintenance or small-surplus phase to build shoulders and back."]];
+let S={};try{S=JSON.parse(localStorage.getItem(K))||{}}catch(e){}
+S.c=S.c||{};S.w=S.w||{};S.l=S.l||[];
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+const pop=n=>{let c=0;while(n){c+=n&1;n>>=1}return c};
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const nav=document.getElementById("nav"),main=document.getElementById("main");
+let tab=(location.hash||"").slice(1);
+if(![...D.map(d=>d.id),"log","guide"].includes(tab))tab="d1";
+function renderNav(){
+ nav.innerHTML=D.map(d=>`<button data-t="${d.id}" ${tab==d.id?'aria-current="true"':''} style="--d:${COL[d.id]}"><span class="dot"></span>${d.tab}</button>`).join("")+
+ `<button data-t="log" ${tab=="log"?'aria-current="true"':''}>Log</button><button data-t="guide" ${tab=="guide"?'aria-current="true"':''}>Guide</button>`;
+}
+function progress(d){
+ const tot=d.ex.reduce((a,e)=>a+e[2],0);
+ const done=d.ex.reduce((a,e,i)=>a+pop(S.c[d.id+"-"+i]||0),0);
+ return[done,tot];
+}
+function renderDay(d){
+ const[done,tot]=progress(d);
+ main.innerHTML=`<section class="top"><h2>${d.tab}: ${d.name}</h2><p>${d.sub}</p><p>${d.why}</p>
+ <div class="bar"><i id="fill" style="width:${done/tot*100}%"></i></div><div class="cnt" id="cnt">${done} of ${tot} sets done</div></section>`+
+ d.ex.map((e,i)=>{const k=d.id+"-"+i,m=S.c[k]||0;
+  return `<article class="ex"><h3>${e[0]}</h3><p class="tg">${e[1]}</p>
+  <div class="chips"><span>${e[2]} × ${e[3]}</span><span>RIR ${e[4]}</span><span>Rest ${e[5]}</span></div>
+  <div class="pl">${Array.from({length:e[2]},(_,j)=>`<button class="p" data-k="${k}" data-j="${j}" aria-pressed="${!!(m>>j&1)}" aria-label="Set ${j+1} of ${e[2]}">${j+1}</button>`).join("")}</div>
+  <label class="wt">Weight <input type="text" inputmode="decimal" data-w="${k}" value="${esc(S.w[k]||"")}" placeholder="0"> kg</label>
+  <details><summary>No machine? Swap for</summary><p>${e[6]}</p></details></article>`}).join("")+
+ `<button class="act" id="clr">Clear checkmarks</button>`;
+}
+function renderLog(){
+ const t=new Date().toISOString().slice(0,10);
+ const rows=S.l.slice().sort((a,b)=>b.d.localeCompare(a.d));
+ main.innerHTML=`<section class="top"><h2>Progress log</h2><p>Weigh in at the same time each morning and measure your waist at the navel once a week.</p></section>
+ <div class="box"><div class="f"><label>Date<input type="date" id="ld" value="${t}"></label>
+ <label>Weight (kg)<input type="text" inputmode="decimal" id="lw"></label>
+ <label>Waist (cm)<input type="text" inputmode="decimal" id="lc"></label>
+ <button class="act pri" id="ls">Save entry</button></div></div>
+ <div class="box">${rows.length?`<table><tr><th>Date</th><th>Weight</th><th>Waist</th><th>Waist ÷ height</th><th></th></tr>`+
+ rows.map(r=>`<tr><td>${r.d}</td><td>${r.w?r.w+" kg":"–"}</td><td>${r.c?r.c+" cm":"–"}</td><td>${r.c?(r.c/H).toFixed(3):"–"}</td><td><button class="x" data-del="${r.id}" aria-label="Delete entry">×</button></td></tr>`).join("")+`</table>`+
+ `<p class="d">Height used: ${H} cm. Waist ÷ height of 0.5 is 84 cm. About 0.45 is 76 cm.</p>`:`<p>No entries yet. Add your first weight and waist above.</p>`}</div>`;
+}
+function renderGuide(){
+ main.innerHTML=`<section class="top"><h2>Guide</h2><p>The rules behind the plan.</p></section><div class="box">`+
+ G.map((g,i)=>`<details ${i==0?"open":""}><summary><b>${g[0]}</b></summary><p>${g[1]}</p></details>`).join("")+`</div>`;
+}
+function render(){
+ document.body.dataset.t=tab;renderNav();
+ const d=D.find(x=>x.id==tab);
+ if(d)renderDay(d);else if(tab=="log")renderLog();else renderGuide();
+ window.scrollTo(0,0);
+}
+nav.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;tab=b.dataset.t;location.hash=tab;render()});
+main.addEventListener("click",e=>{
+ const p=e.target.closest(".p");
+ if(p){const k=p.dataset.k,j=+p.dataset.j;S.c[k]=(S.c[k]||0)^(1<<j);save();
+  p.setAttribute("aria-pressed",String(!!(S.c[k]>>j&1)));
+  const d=D.find(x=>x.id==tab),[a,t]=progress(d);
+  document.getElementById("fill").style.width=a/t*100+"%";
+  document.getElementById("cnt").textContent=a+" of "+t+" sets done";return}
+ if(e.target.id=="clr"){D.find(x=>x.id==tab).ex.forEach((_,i)=>delete S.c[tab+"-"+i]);save();render();return}
+ if(e.target.id=="ls"){
+  const n=s=>parseFloat(String(s).replace(",","."))||0;
+  const w=n(document.getElementById("lw").value),c=n(document.getElementById("lc").value),d=document.getElementById("ld").value;
+  if(!d||(!w&&!c))return;
+  S.l.push({id:Date.now(),d,w:w||0,c:c||0});save();renderLog();return}
+ const x=e.target.closest("[data-del]");
+ if(x){S.l=S.l.filter(r=>r.id!=x.dataset.del);save();renderLog()}
+});
+main.addEventListener("input",e=>{const k=e.target.dataset.w;if(k){S.w[k]=e.target.value;save()}});
+render();
+</script>
+</body>
+</html>
